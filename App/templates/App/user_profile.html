@@ -55,9 +55,10 @@
               <div class="mb-5">
                 <p class="lead fw-normal mb-1">O mnie</p>
                 <div class="p-4" style="background-color: #f8f9fa;">
-                  <p class="font-italic mb-1">Web Developer</p>
-                  <p class="font-italic mb-1">Lives in New York</p>
-                  <p class="font-italic mb-0">Photographer</p>
+                  {% if user.profile_description is None %}
+                  {% else %}
+                  <p class="font-italic mb-1">{{user.profile_description}}</p>
+                  {% endif %}
                 </div>
               </div>
               <div class="d-flex justify-content-between align-items-center mb-4">

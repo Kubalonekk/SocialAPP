@@ -15,4 +15,13 @@ class UserRegisterForm(UserCreationForm):
 class CreatePost(ModelForm):
     class Meta:
         model = Post
+        labels = {
+            'text': 'Opis',
+            'image': 'Obraz',
+        }
+        widgets = {
+          'text': forms.Textarea(attrs={'rows':3,}),
+        }
         fields = ['text', 'image']
+        
+        

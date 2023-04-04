@@ -5,14 +5,19 @@
 
 
 {% block content %}
-<br>
-<div class="container mt-5">
-<form  enctype="multipart/form-data" method="POST">
-    {% csrf_token %}
-
-    {{ form|crispy}}
-    <button class="btn btn-outline-dark mt-2" type='submit'>Dodaj post</button>
-</form>
+<section class="main-content">
+    <div class="container mt-3">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="post-block">
+                <h3>Dodaj nowy post</h3>
+                <form  enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy}}
+                    <button class="btn btn-outline-dark mt-2" type='submit'>Dodaj post</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
