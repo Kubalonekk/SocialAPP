@@ -137,3 +137,16 @@ LANGUAGE_CODE = 'pl'
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+
+#email settings
+
+
+with open(os.path.join(BASE_DIR, 'password_email.txt')) as f:
+    PASSWORD_EMAIL = f.read().strip()
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'kubalonekk99@gmail.com'
+EMAIL_HOST_PASSWORD = PASSWORD_EMAIL
+EMAIL_USE_TLS = True
