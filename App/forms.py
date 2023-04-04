@@ -24,4 +24,12 @@ class CreatePost(ModelForm):
         }
         fields = ['text', 'image']
         
+class EditProfile(ModelForm):
+    class Meta:
+        model = UserProfile
+        widgets = {
+          'profile_description': forms.Textarea(attrs={'rows':1,}),
+        }
+        exclude  = ['user','email','followers']
+        
         

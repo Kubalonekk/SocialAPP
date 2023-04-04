@@ -137,6 +137,7 @@ def add_post(request):
     }
     return render(request, 'App/add_post.html', context)
 
+@login_required(login_url='check/')
 def friends(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -158,6 +159,24 @@ def friends(request):
 
 
 
+
+@login_required(login_url='check/')
+def edit_profile(request):
+    profile = UserProfile.objects.get(user=request.user)
+    if request.method == "POST":
+        form = EditProfile(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Pomyśnie edytowano profil' )
+    else:
+        form = EditProfile(instance=profile)
+    
+    context = {
+        'profile': profile,
+        'form': form,
+    }
+    
+    return render(request, 'App/edit_profile.html', context)
 
 
 def register(request):

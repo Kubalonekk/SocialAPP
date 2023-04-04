@@ -19,5 +19,6 @@ urlpatterns = [
     path('add_or_remove_like/<int:pk>/', views.add_or_remove_like, name="add_or_remove_like"),
     path('friends/', views.friends, name="friends"),
     path('your_profile/', views.your_profile, name="your_profile"),
+    path('edit_profile/', views.edit_profile, name="edit_profile"),
 ]
 

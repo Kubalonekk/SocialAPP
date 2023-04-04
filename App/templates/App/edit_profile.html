@@ -5,5 +5,36 @@
 
 {% block content %}
 
+<section class="main-content">
+    <div class="container">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="post-block">
+                <h5>Aktualne zdjęcie</h5>
+                <div class="d-flex flex-column" style="width: 150px;">
+                    <img src="{{ profile.profile_pic.url }}"
+                      alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                      style="width: 150px; z-index: 1">
+                  </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{form.name |as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{form.last_name |as_crispy_field}}
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{form.profile_description |as_crispy_field}}
+                        </div>
+                    </div>
+                    {{form.profile_pic |as_crispy_field}}
+                    <button type="submit" name="change_pic_form" class="btn btn-outline-dark" data-mdb-ripple-color="dark" >edytuj</button>
+                </form>
+
+                </div>
+
+
+
 
 {% endblock %}
