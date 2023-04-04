@@ -30,6 +30,13 @@ class EditProfile(ModelForm):
         widgets = {
           'profile_description': forms.Textarea(attrs={'rows':1,}),
         }
+        labels = {
+            'name': 'Imię',
+            'last_name': 'Nazwisko',
+            'profile_description': 'Opis profilu',
+            'profile_pic': 'Zdjęcie profilowe',
+        }
+        
         exclude  = ['user','email','followers']
         
         

@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
     profile_pic = models.ImageField(default='user.png')
     followers = models.ManyToManyField('self',blank=True, symmetrical=False)
-    profile_description = models.TextField(max_length=150, null=True)
+    profile_description = models.TextField(max_length=150, null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} {self.last_name}"

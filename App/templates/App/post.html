@@ -50,8 +50,7 @@
                         </div>
                         <a href="#!" class="text-dark"><span>Share</span></a>
                     </div>
-                    <p class="mb-0">Liked by <a href="#!" class="text-muted font-weight-bold">John doe</a> & <a href="#!" class="text-muted font-weight-bold">25 others</a></p>
-                </div>
+                    <p class="mb-0">Polubione przez <a href="#!" class="text-muted font-weight-bold">{{ post.likes.count }}</a> osób</p>
                 <hr>
                 <form method="POST" action="{% url 'index' %}">
                 {% csrf_token %}
@@ -74,9 +73,7 @@
                                 <h6 class="mb-1"><a href="{% url 'user_profile' d.user.id %}" class="text-dark">{{d.user}}</a> <small class="text-muted">{{d.creation_date}}</small></h6>
                                 <p class="mb-1">{{d.text}}</p>
                                 <div class="d-flex">
-                                    <a href="#!" class="text-dark mr-2"><span><i class="fa fa-heart-o"></i></span></a>
-                                    <a href="#!" class="text-dark mr-2"><span>Reply</span></a>
-                                </div>
+                                    
                             </div>
                         </div>
                     </div>
@@ -85,12 +82,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 offset-sm-3">
-        <div class="post-block text-center">
-            <span class="step-links">
-            </span>
-        </div>
-
         </div>
     </div>
     </div>

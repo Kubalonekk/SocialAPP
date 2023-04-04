@@ -89,7 +89,12 @@
                 </div>
             </div>
         </div>
+        {% empty %}
+        <center><h3>Twoja tablica jest pusta, zacznij obserwować użytkowników</h3></center>
         {% endfor %}
+        {% if not page_obj  %}
+
+        {% else %}
         <div class="col-sm-6 offset-sm-3">
         <div class="post-block text-center">
             <span class="step-links">
@@ -108,6 +113,7 @@
                 {% endif %}
             </span>
         </div>
+        {% endif %}
 
         </div>
     </div>
