@@ -1,0 +1,103 @@
+{% extends 'App/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<body>
+    <section class="main-content">
+		<div class="container">
+
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <div class="post-block">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex mb-3">
+                        <div class="mr-2">
+                            <a href="{% url 'user_profile' post.userprofile.id %}" class="text-dark"><img src="{{post.userprofile.profile_pic.url}}" alt="User" class="author-img"></a>
+                        </div>
+                        <div>
+                            <h5 class="mb-0"><a href="{% url 'user_profile' post.userprofile.id %}" class="text-dark">{{ post.userprofile }}</a></h5>
+                            
+                            <p class="mb-0 text-muted">{{ post.creation_date|time}}, {{ post.creation_date|date}}</p>
+                         
+                        </div>
+                    </div>
+                    <div class="post-block__user-options">
+                        <a href="#!" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" style="color: black;" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                            <a class="dropdown-item text-dark" href="#!"><i class="fa fa-pencil mr-1"></i>Edit</a>
+                            <a class="dropdown-item text-danger" href="#!"><i class="fa fa-trash mr-1"></i>Delete</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-block__content mb-2">
+                    <p>{{ post.text }}</p>
+                    <img src="{{ post.image.url }}" alt="Content img">
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex">
+                            {% if request.user.userprofile in post.likes.all  %}
+                                <a href="{% url 'add_or_remove_like' post.id %}" class="text-danger mr-2"><span><i class="fa fa-heart"></i></span></a>
+                            {% else %}
+                                <a href="{% url 'add_or_remove_like' post.id %}" class="text-danger mr-2"><span><i class="fa-regular fa-heart" style="color: #ff0000;"></i></span></a>
+                            {% endif %}
+                            <a href="{% url 'add_or_remove_like' post.id %}" class="text-dark mr-2"><span>Like</span></a>
+                        </div>
+                        <a href="#!" class="text-dark"><span>Share</span></a>
+                    </div>
+                    <p class="mb-0">Liked by <a href="#!" class="text-muted font-weight-bold">John doe</a> & <a href="#!" class="text-muted font-weight-bold">25 others</a></p>
+                </div>
+                <hr>
+                <form method="POST" action="{% url 'index' %}">
+                {% csrf_token %}
+                <div class="post-block__comments">
+                    <!-- Comment Input -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="post_comment" placeholder="Dodaj komentarz">
+                        <input type="hidden"  name="id" value="{{post.id}}">
+                        <div class="input-group-append">
+                              <button class="btn btn-dark" type="submit" id="button-addon2"><i class="fa fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+                    {% for d in post.post_comment.all %}
+                    <!-- Comment content -->
+                    <div class="comment-view-box mb-3">
+                        <div class="d-flex mb-2">
+                            <a href="{% url 'user_profile' d.user.id %}" class="text-dark"><img src="{{d.user.profile_pic.url}}"  alt="User img" class="author-img author-img--small mr-2"></a>
+                            <div>
+                                <h6 class="mb-1"><a href="{% url 'user_profile' d.user.id %}" class="text-dark">{{d.user}}</a> <small class="text-muted">{{d.creation_date}}</small></h6>
+                                <p class="mb-1">{{d.text}}</p>
+                                <div class="d-flex">
+                                    <a href="#!" class="text-dark mr-2"><span><i class="fa fa-heart-o"></i></span></a>
+                                    <a href="#!" class="text-dark mr-2"><span>Reply</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 offset-sm-3">
+        <div class="post-block text-center">
+            <span class="step-links">
+            </span>
+        </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+
+
+
+</body>
+
+{% endblock %}

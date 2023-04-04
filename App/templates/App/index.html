@@ -1,0 +1,121 @@
+{% extends 'App/base.html' %}
+{% load static %}
+
+{% block content %}
+<body>
+    <section class="main-content">
+		<div class="container">
+
+    <div class="row">
+        {% for post in page_obj %}
+        <div class="col-sm-6 offset-sm-3">
+            <div class="post-block">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex mb-3">
+                        <div class="mr-2">
+                            <a href="{% url 'user_profile' post.userprofile.id %}" class="text-dark"><img src="{{post.userprofile.profile_pic.url}}" alt="User" class="author-img"></a>
+                        </div>
+                        <div>
+                            <h5 class="mb-0"><a href="{% url 'user_profile' post.userprofile.id %}" class="text-dark">{{ post.userprofile }}</a></h5>
+                            
+                            <p class="mb-0 text-muted">{{ post.creation_date|time}}, {{ post.creation_date|date}}</p>
+                         
+                        </div>
+                    </div>
+                    <div class="post-block__user-options">
+                        <a href="#!" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" style="color: black;" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
+                            <a class="dropdown-item text-dark" href="#!"><i class="fa fa-pencil mr-1"></i>Edit</a>
+                            <a class="dropdown-item text-danger" href="#!"><i class="fa fa-trash mr-1"></i>Delete</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-block__content mb-2">
+                    <p>{{ post.text }}</p>
+                    <a href="{% url 'post' post.id %}" class="text-dark"><img src="{{ post.image.url }}" alt="Content img"></a>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex">
+                            {% if request.user.userprofile in post.likes.all  %}
+                            <a href="{% url 'add_or_remove_like' post.id %}" class="text-danger mr-2"><span><i class="fa fa-heart"></i></span></a>
+                            {% else %}
+                            <a href="{% url 'add_or_remove_like' post.id %}" class="text-danger mr-2"><span><i class="fa-regular fa-heart" style="color: #ff0000;"></i></span></a>
+                            {% endif %}
+                            <a href="{% url 'add_or_remove_like' post.id %}" class="text-dark mr-2"><span>Like</span></a>
+                        </div>
+                        <a href="#!" class="text-dark"><span>Share</span></a>
+                    </div>
+                    <p class="mb-0">Polubione przez <a href="#!" class="text-muted font-weight-bold">{{ post.likes.count }}</a> osób</p>
+                </div>
+                <hr>
+                <form method="POST" action="{% url 'index' %}">
+                {% csrf_token %}
+                <div class="post-block__comments">
+                    <!-- Comment Input -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="post_comment" placeholder="Dodaj komentarz">
+                        <input type="hidden"  name="id" value="{{post.id}}">
+                        <div class="input-group-append">
+                              <button class="btn btn-dark" type="submit" id="button-addon2"><i class="fa fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+                    {% for d in post.post_comment.all|slice:":3" %}
+                    <!-- Comment content -->
+                    <div class="comment-view-box mb-3">
+                        <div class="d-flex mb-2">
+                            <a href="{% url 'user_profile' d.user.id %}" class="text-dark"><img src="{{d.user.profile_pic.url}}"  alt="User img" class="author-img author-img--small mr-2"></a>
+                            <div>
+                                <h6 class="mb-1"><a href="{% url 'user_profile' d.user.id %}" class="text-dark">{{d.user}}</a> <small class="text-muted">{{d.creation_date}}</small></h6>
+                                <p class="mb-1">{{d.text}}</p>
+                                <div class="d-flex">
+                                    {% comment %} <a href="#!" class="text-dark mr-2"><span><i class="fa fa-heart-o"></i></span></a>
+                                    <a href="#!" class="text-dark mr-2"><span>Reply</span></a> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- More Comments -->
+                    {% endfor %}
+                    {% if post.post_comment.all.count > 3  %}
+                    <hr>
+                    <a href="{% url 'post' post.id %}" class="text-dark">Wyświetl wszystkie komentarze<span class="font-weight-bold"> {{post.post_comment.all.count}}</span></a>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col-sm-6 offset-sm-3">
+        <div class="post-block text-center">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Pierwsza</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Wcześniejsza</a>
+                {% endif %}
+        
+                <span class="current">
+                    Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Następna</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Ostatnia &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+
+        </div>
+    </div>
+    </div>
+</section>
+
+
+
+</body>
+
+{% endblock %}
