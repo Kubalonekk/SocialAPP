@@ -218,11 +218,11 @@ def register(request):
     }
     return render(request, 'App/register.html', context)
         
-@user_passes_test(login_check, login_url='/check/')
+
 def signout(request):
     logout(request)
     messages.success(request, 'Pomyślnie wylogowano')
-    return redirect('login/')
+    return redirect('/login/')
 
       
         

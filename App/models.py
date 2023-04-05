@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(null=True)
     creation_date = models.DateTimeField(auto_now_add=True, null=True)
-    profile_pic = models.ImageField(default='user.png')
+    profile_pic = models.ImageField(default='user_white.png')
     followers = models.ManyToManyField('self',blank=True, symmetrical=False)
     profile_description = models.TextField(max_length=150, null=True, blank=True)
 
