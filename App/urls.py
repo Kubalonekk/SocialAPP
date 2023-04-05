@@ -22,10 +22,13 @@ urlpatterns = [
     path('your_profile/', views.your_profile, name="your_profile"),
     path('edit_profile/', views.edit_profile, name="edit_profile"),
     
+    #reset password
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="App/reset_password.html"), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="App/reset_password_sent.html"), name="password_reset_done"),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="App/reset_password_confirm.html"), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="App/reset_password_complete.html"), name="password_reset_complete"),
     
 ]
+
+
 

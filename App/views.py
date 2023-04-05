@@ -9,9 +9,14 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q
 from .forms import *
+from django.contrib.auth.decorators import user_passes_test
+
+def login_check(user):
+    return user.is_authenticated
 
 
-@login_required(login_url='check/')
+
+@user_passes_test(login_check, login_url='/check/')
 def index(request):
     profile = UserProfile.objects.get(user=request.user)   
     posts = Post.objects.filter(Q(userprofile__in=profile.followers.all())).order_by('-creation_date')
@@ -37,7 +42,7 @@ def index(request):
 
     return render(request, 'App/index.html', context)
 
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def add_or_remove_follow(request, pk):
     user = request.user.userprofile
     profile = UserProfile.objects.get(pk=pk)
@@ -50,7 +55,7 @@ def add_or_remove_follow(request, pk):
     
     return redirect('user_profile', pk)
 
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def add_or_remove_like(request, pk):
     post = Post.objects.get(pk=pk)
     user = request.user.userprofile
@@ -63,7 +68,7 @@ def add_or_remove_like(request, pk):
         messages.success(request, 'Polubiłeś post')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))    
     
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def post(request, pk):
     post = Post.objects.get(pk=pk)
     
@@ -73,7 +78,7 @@ def post(request, pk):
     
     return render(request, 'App/post.html', context)
 
-
+@user_passes_test(login_check, login_url='/check/')
 def your_profile(request):
     user = UserProfile.objects.get(user=request.user)
     posts = user.posts.all()
@@ -94,7 +99,7 @@ def your_profile(request):
 
 
 
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def user_profile(request, pk):
     user = UserProfile.objects.get(pk=pk)
     if user == request.user.userprofile:
@@ -119,7 +124,7 @@ def user_profile(request, pk):
     return render(request, 'App/user_profile.html', context)
 
 
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def add_post(request):
     if request.method == 'POST':
         form = CreatePost(request.POST, request.FILES)
@@ -137,7 +142,12 @@ def add_post(request):
     }
     return render(request, 'App/add_post.html', context)
 
-@login_required(login_url='check/')
+
+def login_check(user):
+    return user.is_authenticated
+
+
+@user_passes_test(login_check, login_url='/check/')
 def friends(request):
     if request.method == "POST":
         name = request.POST.get('name')
@@ -160,7 +170,7 @@ def friends(request):
 
 
 
-@login_required(login_url='check/')
+@user_passes_test(login_check, login_url='/check/')
 def edit_profile(request):
     profile = UserProfile.objects.get(user=request.user)
     if request.method == "POST":
@@ -208,20 +218,22 @@ def register(request):
     }
     return render(request, 'App/register.html', context)
         
-@login_required(login_url='check/')     
+@user_passes_test(login_check, login_url='/check/')
 def signout(request):
     logout(request)
     messages.success(request, 'Pomyślnie wylogowano')
-    return redirect('/login/')
+    return redirect('login/')
 
-
-        
-        
-        
+      
         
 def check(request):
     if request.user.is_anonymous:
         messages.warning(request, 'Musisz być zalogowany żeby mieć dostęp do tej strony')
         return redirect('/login/')
-    return index(request)
+    
+
+
+def custom_page_not_found_view(request, exception):
+    return render(request, "App/404.html", {})
+
 
